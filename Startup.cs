@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using historianalarmservice.Data;
 
 namespace historianalarmservice
 {
@@ -23,6 +25,15 @@ namespace historianalarmservice
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IConfiguration>(Configuration);
+             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                }));
+            services.AddDbContext<ApplicationDbContext>(options =>
+               options.UseNpgsql(Configuration.GetConnectionString("HistorianAlarmDB")));
             services.AddMvc();
         }
 
