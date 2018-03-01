@@ -35,14 +35,21 @@ namespace historianalarmservice.Service
             return historianAlarm;
         }
 
-        public async Task<IEnumerable<HistorianAlarm>> getHistorianAlarmList(int thingId,long startDate,long endDate)
+        public async Task<(IEnumerable<HistorianAlarm>,int)> getHistorianAlarmList(int thingId,long startDate,long endDate,
+        int startat, int quantity)
         {
             var historianAlarm = await _context.HistorianAlarms
                                 .Where(a=>a.thingId == thingId 
-                                && a.startDate >= startDate && startDate <= endDate)
+                                && a.startDate >= startDate && a.startDate <= endDate)
+                                .Skip(startat).Take(quantity)
                                 .ToListAsync();
 
-            return historianAlarm;
+            var total = await _context.HistorianAlarms
+                                .Where(a=>a.thingId == thingId 
+                                && a.startDate >= startDate && a.startDate <= endDate)
+                                .CountAsync();
+
+            return (historianAlarm,total);
         }
 
         public async Task<HistorianAlarm> addHistorianAlarm(HistorianAlarm historianAlarm)

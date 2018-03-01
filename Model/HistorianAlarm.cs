@@ -1,7 +1,9 @@
+using System.ComponentModel.DataAnnotations;
 namespace historianalarmservice.Model
 {
     public class HistorianAlarm
     {
+        [Key]
         public int idHistorian{get;set;}
         public int idAlarm{get;set;}
         public int thingId{get;set;}

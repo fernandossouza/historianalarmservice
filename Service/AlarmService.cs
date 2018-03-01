@@ -20,7 +20,7 @@ namespace historianalarmservice.Service
             _historianService = historianService;
         }
 
-        public async Task<Alarm> getAlarmPerThingId(int thingId)
+        public async Task<Alarm> GetAlarmPerThingId(int thingId)
         {
             var alarmDb = await _context.AlarmCurrents
                           .Where(x=>x.thingId == thingId)
@@ -29,9 +29,16 @@ namespace historianalarmservice.Service
             return alarmDb;
         }
 
-        public async Task<Alarm> addAlarm(Alarm alarm)
+        public async Task<List<Alarm>> GetAll()
         {
-            var alarmDb = await getAlarmPerThingId(alarm.thingId);
+            var alarms = await _context.AlarmCurrents.ToListAsync();
+
+            return alarms;
+        }
+
+        public async Task<Alarm> AddAlarm(Alarm alarm)
+        {
+            var alarmDb = await GetAlarmPerThingId(alarm.thingId);
 
             if(alarmDb != null)
             {
@@ -43,12 +50,15 @@ namespace historianalarmservice.Service
                     
                     await _historianService.updateHistorianAlarm(historianAlarm.idHistorian, historianAlarm);
                 }
-                await deleteAlarm(alarm.idAlarm);
+                await deleteAlarm(alarmDb.idAlarm);
             }
 
-            alarm = await addAlarm(alarm);
+            _context.AlarmCurrents.Add(alarm);
+            await _context.SaveChangesAsync();
 
             var newHistorianAlarm = ConvertAlarmForHistorianAlarm(alarm);
+
+            await _historianService.addHistorianAlarm(newHistorianAlarm);
 
             return alarm;
         }

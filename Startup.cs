@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using historianalarmservice.Data;
+using historianalarmservice.Service;
+using historianalarmservice.Service.Interface;
 
 namespace historianalarmservice
 {
@@ -26,6 +28,10 @@ namespace historianalarmservice
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IConfiguration>(Configuration);
+            services.AddTransient<IAlarmService,AlarmService>();
+            services.AddTransient<IHistorianAlarmsService,HistorianAlarmsService>();
+
+            services.AddSingleton<IConfiguration>(Configuration);
              services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
                 {
                     builder.AllowAnyOrigin()
@@ -40,6 +46,7 @@ namespace historianalarmservice
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors("CorsPolicy");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
