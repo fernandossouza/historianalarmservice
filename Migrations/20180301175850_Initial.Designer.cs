@@ -11,7 +11,7 @@ using System;
 namespace historianalarmservice.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180301134042_Initial")]
+    [Migration("20180301175850_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,36 +23,58 @@ namespace historianalarmservice.Migrations
 
             modelBuilder.Entity("historianalarmservice.Model.Alarm", b =>
                 {
-                    b.Property<int>("idAlarm")
+                    b.Property<int>("alarmId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("alarm");
+                    b.Property<string>("alarmColor")
+                        .IsRequired()
+                        .HasMaxLength(10);
 
-                    b.Property<long>("datetime");
+                    b.Property<string>("alarmDescription")
+                        .IsRequired()
+                        .HasMaxLength(100);
 
-                    b.Property<int>("thingId");
+                    b.Property<string>("alarmName")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
-                    b.HasKey("idAlarm");
+                    b.Property<long?>("datetime")
+                        .IsRequired();
+
+                    b.Property<int?>("thingId")
+                        .IsRequired();
+
+                    b.HasKey("alarmId");
 
                     b.ToTable("AlarmCurrents");
                 });
 
             modelBuilder.Entity("historianalarmservice.Model.HistorianAlarm", b =>
                 {
-                    b.Property<int>("idHistorian")
+                    b.Property<int>("historianId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("alarm");
+                    b.Property<string>("alarmColor")
+                        .IsRequired()
+                        .HasMaxLength(10);
+
+                    b.Property<string>("alarmDescription")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<int>("alarmId");
+
+                    b.Property<string>("alarmName")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.Property<long>("endDate");
-
-                    b.Property<int>("idAlarm");
 
                     b.Property<long>("startDate");
 
                     b.Property<int>("thingId");
 
-                    b.HasKey("idHistorian");
+                    b.HasKey("historianId");
 
                     b.ToTable("HistorianAlarms");
                 });

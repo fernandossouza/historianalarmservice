@@ -21,7 +21,7 @@ namespace historianalarmservice.Service
         public async Task<HistorianAlarm> getHistorianAlarm(int historianId)
         {
             var historianAlarm = await _context.HistorianAlarms
-                                .Where(a=>a.idHistorian == historianId )
+                                .Where(a=>a.historianId == historianId )
                                 .FirstOrDefaultAsync();
 
             return historianAlarm;
@@ -29,7 +29,7 @@ namespace historianalarmservice.Service
         public async Task<HistorianAlarm> getHistorianAlarmPerAlarmId(int alarmId)
         {
             var historianAlarm = await _context.HistorianAlarms
-                                .Where(a=>a.idAlarm == alarmId )
+                                .Where(a=>a.alarmId == alarmId )
                                 .FirstOrDefaultAsync();
 
             return historianAlarm;
@@ -42,6 +42,7 @@ namespace historianalarmservice.Service
                                 .Where(a=>a.thingId == thingId 
                                 && a.startDate >= startDate && a.startDate <= endDate)
                                 .Skip(startat).Take(quantity)
+                                .OrderBy(a=>a.startDate)
                                 .ToListAsync();
 
             var total = await _context.HistorianAlarms
@@ -63,11 +64,11 @@ namespace historianalarmservice.Service
         public async Task<HistorianAlarm> updateHistorianAlarm(int historianAlarmId,HistorianAlarm historianAlarm)
         {
             var historianDb = await _context.HistorianAlarms
-                            .Where(x=> x.idHistorian == historianAlarmId)
+                            .Where(x=> x.historianId == historianAlarmId)
                             .AsNoTracking()
                             .FirstOrDefaultAsync();
 
-            if( historianDb == null || historianDb.idHistorian != historianAlarm.idHistorian)
+            if( historianDb == null || historianDb.historianId != historianAlarm.historianId)
             {
                 return null;
             }

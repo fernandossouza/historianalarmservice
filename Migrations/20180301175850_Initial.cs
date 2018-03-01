@@ -13,32 +13,36 @@ namespace historianalarmservice.Migrations
                 name: "AlarmCurrents",
                 columns: table => new
                 {
-                    idAlarm = table.Column<int>(type: "int4", nullable: false)
+                    alarmId = table.Column<int>(type: "int4", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    alarm = table.Column<string>(type: "text", nullable: true),
+                    alarmColor = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
+                    alarmDescription = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    alarmName = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
                     datetime = table.Column<long>(type: "int8", nullable: false),
                     thingId = table.Column<int>(type: "int4", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AlarmCurrents", x => x.idAlarm);
+                    table.PrimaryKey("PK_AlarmCurrents", x => x.alarmId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "HistorianAlarms",
                 columns: table => new
                 {
-                    idHistorian = table.Column<int>(type: "int4", nullable: false)
+                    historianId = table.Column<int>(type: "int4", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    alarm = table.Column<string>(type: "text", nullable: true),
+                    alarmColor = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
+                    alarmDescription = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    alarmId = table.Column<int>(type: "int4", nullable: false),
+                    alarmName = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
                     endDate = table.Column<long>(type: "int8", nullable: false),
-                    idAlarm = table.Column<int>(type: "int4", nullable: false),
                     startDate = table.Column<long>(type: "int8", nullable: false),
                     thingId = table.Column<int>(type: "int4", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HistorianAlarms", x => x.idHistorian);
+                    table.PrimaryKey("PK_HistorianAlarms", x => x.historianId);
                 });
         }
 

@@ -4,9 +4,19 @@ namespace historianalarmservice.Model
     public class Alarm
     {
         [Key]   
-        public int idAlarm{get;set;}
-        public int thingId{get;set;}
-        public string alarm{get;set;}
-        public long datetime{get;set;}
+        public int alarmId{get;set;}
+        [Required]
+        public int? thingId{get;set;}
+        [Required]
+        [MaxLength(100)]
+        public string alarmDescription{get;set;}
+        [Required]
+        [MaxLength(20)]
+        public string alarmName{get;set;}
+        [Required]
+        [MaxLength(10)]
+        public string alarmColor{get;set;}
+        [Required]
+        public long? datetime{get;set;}
     }
 }

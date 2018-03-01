@@ -20,10 +20,19 @@ namespace historianalarmservice.Service
             _historianService = historianService;
         }
 
-        public async Task<Alarm> GetAlarmPerThingId(int thingId)
+        public async Task<List<Alarm>> GetAlarmPerThingId(int thingId)
         {
             var alarmDb = await _context.AlarmCurrents
                           .Where(x=>x.thingId == thingId)
+                          .ToListAsync();
+            
+            return alarmDb;
+        }
+
+        private async Task<Alarm> GetAlarmPerThingIdAndAlarmName(int thingId,string alarmName)
+        {
+            var alarmDb = await _context.AlarmCurrents
+                          .Where(x=>x.thingId == thingId && x.alarmName ==  alarmName)
                           .FirstOrDefaultAsync();
             
             return alarmDb;
@@ -31,26 +40,26 @@ namespace historianalarmservice.Service
 
         public async Task<List<Alarm>> GetAll()
         {
-            var alarms = await _context.AlarmCurrents.ToListAsync();
+            var alarms = await _context.AlarmCurrents.OrderBy(a=>a.thingId).ToListAsync();
 
             return alarms;
         }
 
         public async Task<Alarm> AddAlarm(Alarm alarm)
         {
-            var alarmDb = await GetAlarmPerThingId(alarm.thingId);
+            var alarmDb = await GetAlarmPerThingIdAndAlarmName(alarm.thingId.Value,alarm.alarmName);
 
             if(alarmDb != null)
             {
-                var historianAlarm = await _historianService.getHistorianAlarmPerAlarmId(alarmDb.idAlarm);
+                var historianAlarm = await _historianService.getHistorianAlarmPerAlarmId(alarmDb.alarmId);
 
                 if(historianAlarm != null)
                 {
-                    historianAlarm.endDate = alarm.datetime;
+                    historianAlarm.endDate = alarm.datetime.Value;
                     
-                    await _historianService.updateHistorianAlarm(historianAlarm.idHistorian, historianAlarm);
+                    await _historianService.updateHistorianAlarm(historianAlarm.historianId, historianAlarm);
                 }
-                await deleteAlarm(alarmDb.idAlarm);
+                await deleteAlarm(alarmDb.alarmId);
             }
 
             _context.AlarmCurrents.Add(alarm);
@@ -65,7 +74,7 @@ namespace historianalarmservice.Service
 
          public async Task<bool> deleteAlarm(int alarmId)
         {
-            var alarm = await _context.AlarmCurrents.Where(x=>x.idAlarm == alarmId).FirstOrDefaultAsync();
+            var alarm = await _context.AlarmCurrents.Where(x=>x.alarmId == alarmId).FirstOrDefaultAsync();
 
             _context.Remove(alarm);
             await _context.SaveChangesAsync();
@@ -76,10 +85,12 @@ namespace historianalarmservice.Service
         {
             HistorianAlarm newHistorianAlarm = new HistorianAlarm();
 
-            newHistorianAlarm.alarm = alarm.alarm;
-            newHistorianAlarm.idAlarm = alarm.idAlarm;
-            newHistorianAlarm.thingId = alarm.thingId;
-            newHistorianAlarm.startDate = alarm.datetime;
+            newHistorianAlarm.alarmDescription = alarm.alarmDescription;
+            newHistorianAlarm.alarmId = alarm.alarmId;
+            newHistorianAlarm.thingId = alarm.thingId.Value;
+            newHistorianAlarm.startDate = alarm.datetime.Value;
+            newHistorianAlarm.alarmColor = alarm.alarmColor;
+            newHistorianAlarm.alarmName = alarm.alarmName;
 
             return newHistorianAlarm;
         }
