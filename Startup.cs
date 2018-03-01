@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using historianalarmservice.Data;
 using historianalarmservice.Service;
 using historianalarmservice.Service.Interface;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace historianalarmservice
 {
@@ -47,6 +48,9 @@ namespace historianalarmservice
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseCors("CorsPolicy");
+            app.UseForwardedHeaders (new ForwardedHeadersOptions {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
