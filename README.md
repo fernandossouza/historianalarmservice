@@ -24,14 +24,42 @@ this used for CRUD of alarm
 
 ### JSON Example
 ```json
-{
-    "alarmId": 3,
-    "thingId": 2,
-    "alarmDescription": "Normal",
-    "alarmName": "Pressão",
-    "alarmColor": "Azul",
-    "datetime": 3
-}
+[
+    {
+        "thingId": 1,
+        "alarms": [
+            {
+                "alarmId": 2,
+                "thingId": 1,
+                "alarmDescription": "Alto",
+                "alarmName": "Pressão",
+                "alarmColor": "#ed0404",
+                "datetime": 636555924000000000
+            }
+        ]
+    },
+    {
+        "thingId": 2,
+        "alarms": [
+            {
+                "alarmId": 3,
+                "thingId": 2,
+                "alarmDescription": "Normal",
+                "alarmName": "Pressão",
+                "alarmColor": "#2319e8",
+                "datetime": 636555942000000000
+            },
+            {
+                "alarmId": 4,
+                "thingId": 2,
+                "alarmDescription": "Baixa",
+                "alarmName": "Agitação",
+                "alarmColor": "#2aed10",
+                "datetime": 636555978000000000
+            }
+        ]
+    }
+]
 ```
 
 ## Url Alarm
@@ -58,7 +86,7 @@ this return historian alarm
 - alarmName: name of the alarm
     - String(20)
 - alarmColor: color of the alarm
-    -String(10)
+    - String(10)
 - startDate: start date in ticks of the alarm
     - long
 - endDate: end date in ticks of the alarm
@@ -101,7 +129,7 @@ this return historian alarm
         * endDate: period last of the search
         * startat: represent where the list starts t the database (Default=0)
         * quantity: number of resuls in the query (Default=50)
-        
+
 
 
 

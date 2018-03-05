@@ -5,8 +5,8 @@ namespace historianalarmservice.Service.Interface
 {
     public interface IAlarmService
     {
-        Task<List<Alarm>> GetAlarmPerThingId(int thingId);
-        Task<List<Alarm>> GetAll();
+        Task<List<AlarmCurrent>> GetAlarmPerThingId(int thingId);
+        Task<List<AlarmCurrent>> GetAll();
         Task<Alarm> AddAlarm(Alarm alarm);
          
     }

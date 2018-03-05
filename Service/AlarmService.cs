@@ -20,13 +20,15 @@ namespace historianalarmservice.Service
             _historianService = historianService;
         }
 
-        public async Task<List<Alarm>> GetAlarmPerThingId(int thingId)
+        public async Task<List<AlarmCurrent>> GetAlarmPerThingId(int thingId)
         {
             var alarmDb = await _context.AlarmCurrents
                           .Where(x=>x.thingId == thingId)
                           .ToListAsync();
             
-            return alarmDb;
+            var alarmCurrent = ConvertAlarmInAlarmCurrent(alarmDb);
+
+            return alarmCurrent;
         }
 
         private async Task<Alarm> GetAlarmPerThingIdAndAlarmName(int thingId,string alarmName)
@@ -38,11 +40,38 @@ namespace historianalarmservice.Service
             return alarmDb;
         }
 
-        public async Task<List<Alarm>> GetAll()
+        public async Task<List<AlarmCurrent>> GetAll()
         {
             var alarms = await _context.AlarmCurrents.OrderBy(a=>a.thingId).ToListAsync();
 
-            return alarms;
+            var alarmCurrent = ConvertAlarmInAlarmCurrent(alarms);
+
+            return alarmCurrent;
+        }
+
+        private List<AlarmCurrent> ConvertAlarmInAlarmCurrent(IList<Alarm> alarms)
+        {
+            List<AlarmCurrent> alarmCurrentList = new List<AlarmCurrent>();
+            
+
+            var alarmGroups = alarms.GroupBy(a => a.thingId);
+
+
+            foreach(var alarmGroup in alarmGroups)
+            {
+                AlarmCurrent alarmCurrent = new AlarmCurrent();
+                foreach(var alarm in alarmGroup)
+                {
+                    if(alarmCurrent.alarms == null)
+                        alarmCurrent.alarms = new List<Alarm>();
+
+                    alarmCurrent.thingId = alarm.thingId.Value;
+                    alarmCurrent.alarms.Add(alarm);
+                }
+                alarmCurrentList.Add(alarmCurrent);
+            }
+
+            return alarmCurrentList;
         }
 
         public async Task<Alarm> AddAlarm(Alarm alarm)
