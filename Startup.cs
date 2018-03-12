@@ -29,8 +29,8 @@ namespace historianalarmservice
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddTransient<IAlarmService,AlarmService>();
-            services.AddTransient<IHistorianAlarmsService,HistorianAlarmsService>();
+            services.AddSingleton<IAlarmService,AlarmService>();
+            services.AddSingleton<IHistorianAlarmsService,HistorianAlarmsService>();
 
             services.AddSingleton<IConfiguration>(Configuration);
              services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
