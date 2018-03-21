@@ -18,48 +18,29 @@ this used for CRUD of alarm
 - alarmColor: color of the alarm
     - String(50)
     - Required
+- priority: Alarm Priority, indicates the priority of the Alarms when multiple alarms run at once. Higher means Higher priority.
+    - Integer
+    - Required, (Default=0)
 - datetime: date in ticks of the alarm
     - Long
     - Required
 
 ### JSON Example
 ```json
-[
-    {
-        "thingId": 1,
-        "alarms": [
-            {
-                "alarmId": 2,
-                "thingId": 1,
-                "alarmDescription": "Alto",
-                "alarmName": "Pressão",
-                "alarmColor": "#ed0404",
-                "datetime": 636555924000000000
-            }
-        ]
-    },
-    {
-        "thingId": 2,
-        "alarms": [
-            {
-                "alarmId": 3,
-                "thingId": 2,
-                "alarmDescription": "Normal",
-                "alarmName": "Pressão",
-                "alarmColor": "#2319e8",
-                "datetime": 636555942000000000
-            },
-            {
-                "alarmId": 4,
-                "thingId": 2,
-                "alarmDescription": "Baixa",
-                "alarmName": "Agitação",
-                "alarmColor": "#2aed10",
-                "datetime": 636555978000000000
-            }
-        ]
-    }
-]
+{
+    "thingId": 1,
+    "alarms": [
+        {
+            "alarmId": 2,
+            "thingId": 1,
+            "alarmDescription": "Alto",
+            "alarmName": "Pressão",
+            "alarmColor": "#ed0404",
+            "priority": 0,
+            "datetime": 636555924000000000
+        }
+    ]
+}
 ```
 
 ## Url Alarm
