@@ -111,7 +111,7 @@ this return historian alarm
         * startat: represent where the list starts t the database (Default=0)
         * quantity: number of resuls in the query (Default=50)
 
-## After Association Post
+## After Creation Post
 
 This API can send the Data to a Endpoint if the configuration in present (AlarmPostEndpoint section on config). The API will send a alarm JSON to the configured endpoint.
 
