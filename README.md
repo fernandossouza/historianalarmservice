@@ -1,5 +1,5 @@
 # historianalarmservice
-API with historian of alarm and alarms currents
+API with historian of alarm and alarms currents. Default port: 5012
 
 ## Alarm
 this used for CRUD of alarm
@@ -110,6 +110,10 @@ this return historian alarm
         * endDate: period last of the search
         * startat: represent where the list starts t the database (Default=0)
         * quantity: number of resuls in the query (Default=50)
+
+## After Association Post
+
+This API can send the Data to a Endpoint if the configuration in present (AlarmPostEndpoint section on config). The API will send a alarm JSON to the configured endpoint.
 
 
 
