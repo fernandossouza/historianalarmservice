@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace historianalarmservice.Model {
     public class Alarm {
         [Key]
@@ -6,6 +8,9 @@ namespace historianalarmservice.Model {
 
         [Required]
         public int? thingId { get; set; }
+
+        [NotMapped]
+        public Thing thing { get; set; }
 
         [Required]
         [MaxLength (100)]

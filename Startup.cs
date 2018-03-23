@@ -24,6 +24,7 @@ namespace historianalarmservice {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
+            services.AddTransient<IThingService, ThingService> ();
             services.AddTransient<IAlarmService, AlarmService> ();
             services.AddTransient<IHistorianAlarmsService, HistorianAlarmsService> ();
             services.AddCors (o => o.AddPolicy ("CorsPolicy", builder => {
@@ -31,6 +32,7 @@ namespace historianalarmservice {
                     .AllowAnyMethod ()
                     .AllowAnyHeader ();
             }));
+
             services.AddDbContext<ApplicationDbContext> (options =>
                 options.UseNpgsql (Configuration.GetConnectionString ("HistorianAlarmDB")));
             services.AddMvc ();

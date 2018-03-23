@@ -41,8 +41,8 @@ namespace historianalarmservice.Service
             var historianAlarm = await _context.HistorianAlarms
                                 .Where(a=>a.thingId == thingId 
                                 && a.startDate >= startDate && a.startDate <= endDate)
-                                .Skip(startat).Take(quantity)
                                 .OrderBy(a=>a.startDate)
+                                .Skip(startat).Take(quantity)                              
                                 .ToListAsync();
 
             var total = await _context.HistorianAlarms
