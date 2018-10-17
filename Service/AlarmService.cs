@@ -110,16 +110,17 @@ namespace historianalarmservice.Service {
 
         private async void Trigger (Alarm alarm) {
             try {
+                var content = new StringContent (JsonConvert.SerializeObject (alarm), Encoding.UTF8, "application/json");
                 if (_configuration["AlarmPostEndpoint"] != null) {
                     client.DefaultRequestHeaders.Accept.Clear ();
-                    client.DefaultRequestHeaders.Accept.Add (new MediaTypeWithQualityHeaderValue ("application/json"));
-                    var content = new StringContent (JsonConvert.SerializeObject (alarm), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync (_configuration["AlarmPostEndpoint"], content);
+                    client.DefaultRequestHeaders.Accept.Add (new MediaTypeWithQualityHeaderValue ("application/json"));                    
+                    HttpResponseMessage response = await client.PostAsync (_configuration["AlarmPostEndpoint"], content);                                        
                     if (response.IsSuccessStatusCode) {
                         Console.WriteLine ("Data posted on AssociationPostEndpoint");
                         //Console.WriteLine (await response.Content.ReadAsStringAsync ());
-                    }
+                    }                                        
                 }
+                Console.WriteLine((await client.PostAsync(_configuration["EmailEndpoint"], content)).ToString());
             } catch (Exception ex) {
                 Console.WriteLine (ex.Message);
             }
