@@ -13,7 +13,7 @@ namespace historianalarmservice.Model
         [MaxLength(100)]
         public string alarmDescription{get;set;}
         [Required]
-        [MaxLength(20)]
+        [MaxLength(50)]
         public string alarmName{get;set;}
         [Required]
         [MaxLength(10)]
